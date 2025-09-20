@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<String> students = ["Alumno1", "Alumno2", "Alumno3"];
   final Student student = Student("EstudianteTest1", "20223tn036");
+  List<Student> studentList = [];
 
   TextEditingController _txtName = TextEditingController();
 
@@ -73,6 +74,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ...students.map((n) => Text("- $n")).toList(),
       ],
     );
+  }
+
+  void _addStudents() {
+    final name = _txtName.text.trim();
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Plese write something")));
+      return;
+    }
+    setState(() {
+      students.add(name);
+    });
+    _txtName.clear();
   }
 
   void _removeCounter() {
@@ -111,6 +126,23 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: TextField(
+                controller: _txtName,
+                decoration: InputDecoration(
+                  labelText: "Name: ",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: ElevatedButton(
+                onPressed: _addStudents,
+                child: Text("Add student"),
+              ),
             ),
             SizedBox(height: 15),
             Text('Nombre: $name'),
